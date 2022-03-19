@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/nav.css">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <style>
+      #results{
+        display: grid;
+        grid-template-columns: repeat(4,25%);
+        gap:30px;
+      }
+      iframe{
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id='container'></div>  
+    <div id="results"></div>
+  </body>
+</html>
+<script type="module">
+  import navbar from './components/nav.js'
+  let container =document.getElementById('container');
+  container.innerHTML=navbar();
+
+  const results = document.getElementById("results");
+  var url=`https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=20&regionCode=IN&key=AIzaSyDjdZNuF9uuaeQm98ILza9FCzYNYxMr1X0`;
+  getdata(url);
+  document.getElementById('searching').addEventListener('click',function(){
+    parameter();
+  })
+  function parameter(){
+    let name = document.getElementById("video").value;
+    let nurl=`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${name}&key=AIzaSyDjdZNuF9uuaeQm98ILza9FCzYNYxMr1X0`
+    getdata(nurl);
+  }
+
+  async function getdata(url) {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log(data);
+      let {items} =data;
+      // appendvideos(items);
+      console.log('items:', items)
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const appendvideos = (items) => {
+    results.textContent = "";
+    items.map((elm,index) => {
+      let {
+        snippet,id:videoId,
+      } = elm;
+      console.log(videoId);
+      let title=document.createElement('p');
+      title.innerHTML=snippet.title;
+      let img=document.createElement('img');
+      img.src=snippet.thumbnails.medium.url;
+      let div=document.createElement('div');
+      div.addEventListener('click',function(){
+        let datatosend={
+          snippet,
+          videoId
+        };
+        showvideo(datatosend);
+      })
+      div.append(img,title);
+      results.append(div);
+    });
+    
+  };
+  function showvideo(click){
+    console.log(click);
+    localStorage.setItem('clicked',JSON.stringify(click));
+    window.location.href='ytvideo.html';
+  }
+</script>

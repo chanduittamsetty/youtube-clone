@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/nav.css">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <style>
+
+      #main {
+        display: flex;
+        height: 400px;
+      }
+      #videodet {
+        flex: 4;
+      }
+      #recommend {
+        flex: 2;
+      }
+      /* div{
+            border: 2px solid yellow;
+        } */
+      #recommend > div {
+        display: flex;
+      }
+      #recommend > div > img {
+        width: 150px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="nav"></div>
+    <div id="main">
+      <div id="videodet"></div>
+      <div id="recommend"></div>
+    </div>
+  </body>
+</html>
+<script type="module">
+  import navbar from './components/nav.js'
+  let container =document.getElementById('nav');
+  container.innerHTML=navbar();
+
+
+  let viddata = JSON.parse(localStorage.getItem("clicked"));
+  console.log(viddata);
+  let videodiv = document.getElementById("videodet");
+  let iframe = document.createElement("iframe");
+  let { videoId:{videoId} } = viddata;
+  iframe.src = `https://www.youtube.com/embed/${videoId}`;
+  Object.assign(iframe, {
+    width: "100%",
+    height: "100%",
+    title: "YouTube video player",
+    frameborder: "0",
+    allow:
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+    allow: "fullscreen",
+  });
+  videodiv.append(iframe);
+
+  let url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&relatedToVideoId=${videoId}&type=video&key=AIzaSyDjdZNuF9uuaeQm98ILza9FCzYNYxMr1X0`;
+  getdata(url);
+  async function getdata(url) {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      let { items } = data;
+      appendvideos(items);
+      console.log("items:", items);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const appendvideos = (items) => {
+    recommend.textContent = "";
+    items.map((elm, index) => {
+      let {
+        snippet,
+        id: { videoId },
+      } = elm;
+      let title = document.createElement("p");
+      title.innerHTML = snippet.title;
+      let img = document.createElement("img");
+      img.src = snippet.thumbnails.medium.url;
+      let div = document.createElement("div");
+      div.addEventListener("click", function () {
+        datatosend = {
+          snippet,
+          videoId,
+        };
+        showvideo(datatosend);
+      });
+      div.append(img, title);
+      recommend.append(div);
+    });
+  };
+  function showvideo(click) {
+    console.log(click);
+    localStorage.setItem("clicked", JSON.stringify(click));
+    window.location.href = "ytvideo.html";
+  }
+</script>

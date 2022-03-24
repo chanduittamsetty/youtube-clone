@@ -1,7 +1,5 @@
 # youtube-clone
 youtube app clone -it fetches data from api provided by youtube and plays it using iframe
-# bobi-brown-clone
-Bobbi brown clone. The applications front-end is made with HTML ,CSS and Data is created as object in the scripts. we can navigate through different sections of products and filter them. It has dynamic cart. 
 # Home Page
 ![Screenshot (142)](https://user-images.githubusercontent.com/95960219/159886461-d8ee8b49-9c7a-431a-b1ef-6b4601d56899.png)
 

@@ -23,7 +23,7 @@ JavaScript
 
 ## Features & Pages
 
-Login and Sign up using MongoDb atlas.
+Login and Sign up .
 Homepage - view all products & categories.
 Search page - See your search results.
 

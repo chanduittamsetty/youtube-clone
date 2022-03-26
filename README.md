@@ -2,6 +2,7 @@
 youtube app clone -it fetches data from api provided by youtube and plays it using iframe
 # Home Page
 ![Screenshot (142)](https://user-images.githubusercontent.com/95960219/159886461-d8ee8b49-9c7a-431a-b1ef-6b4601d56899.png)
+![Screenshot (147)](https://user-images.githubusercontent.com/95960219/160223764-467df118-db3a-4e9d-82cd-5db18a681c0f.png)
 
 this is a basic front-end application
 
